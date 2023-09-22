@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:the_gig_workers_app/screens/intro_slider/intro_slider_screen.dart';
 
-void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+import 'package:the_gig_workers_app/screens/intro_slider/intro_slider_screen.dart';
+import 'package:the_gig_workers_app/screens/user_authentication/login/login_page.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int screen = 0;
     return MaterialApp(
       title: 'The GIG',
       theme: ThemeData(
