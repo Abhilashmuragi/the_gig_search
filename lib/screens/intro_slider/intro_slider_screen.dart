@@ -43,47 +43,15 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
         children: <Widget>[
           Flexible(
             child: PageView(
-              onPageChanged: (int page) {
-                setState(() {
-                  currentIndex = page;
-                });
-              },
-              controller: _pageController,
-              children: <Widget>[
-                SliderPage(
-                    image: 'assets/images/intro_slider_1.png',
-                    title: Strings.intoStepOneTitle,
-                    content: Strings.introStepOneContent),
-                SliderPage(
-                    image: 'assets/images/intro_slider_2.png',
-                    title: Strings.introStepTwoTitle,
-                    content: Strings.introStepTwoContent),
-                SliderPage(
-                    image: 'assets/images/intro_slider_3.png',
-                    title: Strings.introStepThreeTitle,
-                    content: Strings.introStepThreeContent),
-                SliderPage(
-                    image: 'assets/images/intro_slider_4.png',
-                    title: Strings.introStepFourTitle,
-                    content: Strings.introStepFourContent),
-                SliderPage(
-                    image: 'assets/images/intro_slider_5.png',
-                    title: Strings.introStepFiveTitle,
-                    content: Strings.introStepFiveContent),
-                SliderPage(
-                    image: 'assets/images/intro_slider_6.png',
-                    title: Strings.introStepSixTitle,
-                    content: Strings.introStepSixContent),
-              ],
-            ),
+                onPageChanged: (int page) {
+                  setState(() {
+                    currentIndex = page;
+                  });
+                },
+                controller: _pageController,
+                children: _sliderImages()),
           ),
-          Container(
-            margin: const EdgeInsets.only(left: 23),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: _buildIndicator(),
-            ),
-          ),
+          _buildIndicator(),
           const SizedBox(height: 60),
           Padding(
             padding: const EdgeInsets.only(right: 23),
@@ -108,7 +76,8 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
                 },
                 child: Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10),
-                    child: Text(currentIndex == 5 ? "Let's go!" : "Next")),
+                    child: Text(
+                        currentIndex == 5 ? Strings.letsGo : Strings.next)),
               ),
             ),
           ),
@@ -118,7 +87,7 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
     );
   }
 
-  List<Widget> _buildIndicator() {
+  Widget _buildIndicator() {
     List<Widget> indicators = [];
     for (int i = 0; i < 6; i++) {
       if (currentIndex == i) {
@@ -129,7 +98,42 @@ class _IntroSliderScreenState extends State<IntroSliderScreen> {
         ));
       }
     }
-    return indicators;
+    return Container(
+      margin: const EdgeInsets.only(left: 23),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: indicators,
+      ),
+    );
+  }
+
+  List<Widget> _sliderImages() {
+    return const [
+      SliderPage(
+          image: 'assets/images/intro_slider/intro_slider_1.png',
+          title: Strings.intoStepOneTitle,
+          content: Strings.introStepOneContent),
+      SliderPage(
+          image: 'assets/images/intro_slider/intro_slider_2.png',
+          title: Strings.introStepTwoTitle,
+          content: Strings.introStepTwoContent),
+      SliderPage(
+          image: 'assets/images/intro_slider/intro_slider_3.png',
+          title: Strings.introStepThreeTitle,
+          content: Strings.introStepThreeContent),
+      SliderPage(
+          image: 'assets/images/intro_slider/intro_slider_4.png',
+          title: Strings.introStepFourTitle,
+          content: Strings.introStepFourContent),
+      SliderPage(
+          image: 'assets/images/intro_slider/intro_slider_5.png',
+          title: Strings.introStepFiveTitle,
+          content: Strings.introStepFiveContent),
+      SliderPage(
+          image: 'assets/images/intro_slider/intro_slider_6.png',
+          title: Strings.introStepSixTitle,
+          content: Strings.introStepSixContent),
+    ];
   }
 }
 

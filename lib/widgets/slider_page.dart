@@ -33,8 +33,8 @@ class SliderPage extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: ColorSys.primary,
+            style: const TextStyle(
+                color: Colors.black,
                 fontSize: 28,
                 fontWeight: FontWeight.w700),
           ),
@@ -43,8 +43,8 @@ class SliderPage extends StatelessWidget {
           ),
           Text(
             content,
-            style: TextStyle(
-                color: ColorSys.gray,
+            style: const TextStyle(
+                color: Colors.grey,
                 fontSize: 15,
                 fontWeight: FontWeight.w400),
           ),

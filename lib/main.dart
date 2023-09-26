@@ -13,13 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int screen = 0;
+    int screen = 1;
     return MaterialApp(
       title: 'The GIG',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const IntroSliderScreen(),
+      home: (screen == 0) ? const IntroSliderScreen() : const LoginPage(),
       debugShowCheckedModeBanner: false,
     );
   }
