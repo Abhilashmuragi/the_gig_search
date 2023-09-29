@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:the_gig_workers_app/screens/intro_slider/intro_slider_page.dart';
 import 'package:the_gig_workers_app/screens/user_authentication/auth_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:the_gig_workers_app/screens/user_authentication/login/login_page.dart';
