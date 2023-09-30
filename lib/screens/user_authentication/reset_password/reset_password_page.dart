@@ -1,21 +1,26 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:the_gig_workers_app/screens/user_authentication/check_mail/check_mail_screen.dart';
+import 'package:the_gig_workers_app/main.dart';
+import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
-import '../../../components/common/custom_form_button.dart';
-import '../../../components/common/custom_input_field.dart';
-import '../../../utils/constants/strings.dart';
-import '../signup/signup_page.dart';
+import '../../../utils/values/colors.dart';
+import '../../../utils/values/strings.dart';
+import '../../../utils/widgets/custom_form_button.dart';
+import '../../../utils/widgets/custom_input_field.dart';
 
-class ResetPasswordScreen extends StatefulWidget {
-  const ResetPasswordScreen({super.key});
+class ResetPasswordPage extends StatefulWidget {
+  static String id = '/resetPassword';
+
+  const ResetPasswordPage({super.key});
 
   @override
-  State<ResetPasswordScreen> createState() => _ResetPasswordScreenState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
+  final _emailController = TextEditingController();
   final _loginFormKey = GlobalKey<FormState>();
 
   @override
@@ -30,14 +35,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 child: Stack(
                   children: [
                     SingleChildScrollView(
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16, top: 61, right: 16),
+                        padding: const EdgeInsets.only(left: 16, top: 61, right: 16),
                         child: Form(
                           key: _loginFormKey,
                           child: Column(
@@ -57,22 +60,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                   ),
                                   const SizedBox(height: 28),
                                   Text(Strings.willMailInstruction,
-                                      style: GoogleFonts.poppins().copyWith(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.normal)),
+                                      style: GoogleFonts.poppins().copyWith(fontSize: 14, fontWeight: FontWeight.normal)),
                                   const SizedBox(
                                     height: 18,
                                   ),
                                   CustomInputField(
+                                      controller: _emailController,
                                       labelText: Strings.email,
                                       hintText: Strings.tempMail,
                                       validator: (textValue) {
-                                        if (textValue == null ||
-                                            textValue.isEmpty) {
+                                        if (textValue == null || textValue.isEmpty) {
                                           return Strings.emailRequired;
                                         }
-                                        if (!EmailValidator.validate(
-                                            textValue)) {
+                                        if (!EmailValidator.validate(textValue)) {
                                           return Strings.enterValidMail;
                                         }
                                         return null;
@@ -106,19 +106,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SignUpPage()))
-                                },
+                                onTap: () => navigatorKey.currentState!.popUntil((route) => route.isFirst),
                                 child: Text(
                                   Strings.signup,
-                                  style: GoogleFonts.poppins().copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0XFF2805FF)),
+                                  style:
+                                      GoogleFonts.poppins().copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: ColorSys.authBlue),
                                 ),
                               ),
                             ],
@@ -136,8 +128,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  void _handleResetPassword() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const CheckMailScreen()));
+  Future _handleResetPassword() async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
+      Components.showSnackBar("Password reset email was sent");
+    } on FirebaseAuthException catch (e) {
+      Components.showSnackBar(e.message);
+    }
   }
 }

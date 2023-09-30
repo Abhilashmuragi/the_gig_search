@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:the_gig_workers_app/utils/values/colors.dart';
 
 class CustomFormButton extends StatelessWidget {
   final String innerText;
   final void Function()? onPressed;
   final double? fontSize;
 
-  const CustomFormButton(
-      {Key? key,
-      required this.innerText,
-      required this.onPressed,
-      this.fontSize = 20})
-      : super(key: key);
+  const CustomFormButton({Key? key, required this.innerText, required this.onPressed, this.fontSize = 20}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +14,7 @@ class CustomFormButton extends StatelessWidget {
     return Container(
       width: size.width,
       decoration: BoxDecoration(
-        color: const Color(0xff233743),
+        color: ColorSys.authSubmit,
         borderRadius: BorderRadius.circular(8),
       ),
       child: TextButton(

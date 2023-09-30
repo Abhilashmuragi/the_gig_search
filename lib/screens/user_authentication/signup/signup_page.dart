@@ -1,24 +1,34 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:the_gig_workers_app/screens/user_authentication/login/login_page.dart';
-import 'package:the_gig_workers_app/screens/user_authentication/terms_and_conditions/terms_and_conditions_screen.dart';
+import 'package:the_gig_workers_app/screens/user_authentication/terms_and_conditions/terms_and_conditions_page.dart';
+import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
-import '../../../components/common/custom_form_button.dart';
-import '../../../components/common/custom_input_field.dart';
-import '../../../utils/constants/strings.dart';
+import '../../../main.dart';
+import '../../../utils/values/colors.dart';
+import '../../../utils/values/strings.dart';
+import '../../../utils/widgets/custom_form_button.dart';
+import '../../../utils/widgets/custom_input_field.dart';
 
 class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  static String id = '/SignupPage';
+  final VoidCallback onClickLoginSignup;
+
+  const SignUpPage({Key? key, required this.onClickLoginSignup}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _loginFormKey = GlobalKey<FormState>();
-  bool rememberMe = false;
+  final formKey = GlobalKey<FormState>();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool _signupError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,25 +42,23 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Container(
                 decoration: const BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 child: Stack(
                   children: [
                     SingleChildScrollView(
                       child: Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16, top: 61, right: 16),
-                        child: Form(
-                          key: _loginFormKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Column(
+                        padding: const EdgeInsets.only(left: 16, top: 61, right: 16),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Form(
+                              key: formKey,
+                              child: Column(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    Strings.login,
+                                    Strings.signup,
                                     textAlign: TextAlign.center,
                                     style: GoogleFonts.poppins().copyWith(
                                       fontSize: 28,
@@ -59,56 +67,58 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                   const SizedBox(height: 28),
                                   CustomInputField(
+                                      controller: _firstNameController,
                                       labelText: Strings.firstName,
                                       hintText: Strings.yourFirstName,
                                       prefixIcon: false,
                                       validator: (textValue) {
-                                        if (textValue == null ||
-                                            textValue.isEmpty) {
+                                        if (textValue == null || textValue.isEmpty) {
                                           return Strings.firstNameRequired;
                                         }
                                         return null;
                                       }),
                                   const SizedBox(height: 18),
                                   CustomInputField(
+                                      controller: _lastNameController,
                                       labelText: Strings.lastName,
                                       hintText: Strings.yourLastName,
                                       obscureText: true,
                                       prefixIcon: false,
                                       validator: (textValue) {
-                                        if (textValue == null ||
-                                            textValue.isEmpty) {
+                                        if (textValue == null || textValue.isEmpty) {
                                           return Strings.lastNameRequired;
                                         }
                                         return null;
                                       }),
                                   const SizedBox(height: 18),
                                   CustomInputField(
+                                      controller: _emailController,
                                       labelText: Strings.email,
                                       hintText: Strings.tempMail,
                                       validator: (textValue) {
-                                        if (textValue == null ||
-                                            textValue.isEmpty) {
+                                        if (textValue == null || textValue.isEmpty) {
                                           return Strings.emailRequired;
                                         }
-                                        if (!EmailValidator.validate(
-                                            textValue)) {
+                                        if (!EmailValidator.validate(textValue)) {
                                           return Strings.enterValidMail;
                                         }
                                         return null;
                                       }),
                                   const SizedBox(height: 18),
                                   CustomInputField(
+                                    controller: _passwordController,
                                     labelText: Strings.password,
                                     hintText: Strings.yourPassword,
                                     obscureText: true,
                                     suffixIcon: true,
                                     validator: (textValue) {
-                                      if (textValue == null ||
-                                          textValue.isEmpty) {
+                                      if (textValue == null || textValue.isEmpty) {
                                         return Strings.passwordRequired;
+                                      } else if (textValue.length < 6) {
+                                        return "Password should contain minimum 6 characters.";
+                                      } else {
+                                        return null;
                                       }
-                                      return null;
                                     },
                                   ),
                                   const SizedBox(height: 18),
@@ -118,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         const TextSpan(
                                           text: Strings.bySigningUp,
                                           style: TextStyle(
-                                            color: Color(0xFF747980),
+                                            color: Colors.grey,
                                             fontSize: 14,
                                             fontFamily: 'Poppins',
                                             fontWeight: FontWeight.w500,
@@ -128,7 +138,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         const TextSpan(
                                           text: Strings.tAmpersandC,
                                           style: TextStyle(
-                                            color: Color(0xFF312E49),
+                                            color: Colors.black,
                                             fontSize: 14,
                                             fontFamily: 'Poppins',
                                             fontWeight: FontWeight.w500,
@@ -138,7 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         const TextSpan(
                                           text: Strings.and,
                                           style: TextStyle(
-                                            color: Color(0xFF747980),
+                                            color: Colors.grey,
                                             fontSize: 14,
                                             fontFamily: 'Poppins',
                                             fontWeight: FontWeight.w500,
@@ -148,7 +158,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         const TextSpan(
                                           text: Strings.privacyPolicy,
                                           style: TextStyle(
-                                            color: Color(0xFF312E49),
+                                            color: Colors.black,
                                             fontSize: 14,
                                             fontFamily: 'Poppins',
                                             fontWeight: FontWeight.w500,
@@ -158,7 +168,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         TextSpan(
                                             text: Strings.learnMore,
                                             style: const TextStyle(
-                                              color: Color(0xFF2705FF),
+                                              color: ColorSys.authBlue,
                                               fontSize: 14,
                                               fontFamily: 'Poppins',
                                               fontWeight: FontWeight.w500,
@@ -166,11 +176,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             ),
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const TermsAndConditionsScreen()));
+                                                navigatorKey.currentState!.pushNamed(TermsAndConditionsPage.id);
                                               }),
                                       ],
                                     ),
@@ -178,27 +184,33 @@ class _SignUpPageState extends State<SignUpPage> {
                                   const SizedBox(height: 28),
                                   CustomFormButton(
                                     innerText: Strings.continu,
-                                    onPressed: _handleLoginUser,
+                                    onPressed: _handleSignupUser,
                                   ),
-                                  const SizedBox(height: 20),
+                                  if (_signupError)
+                                    Column(
+                                      children: [
+                                        const SizedBox(height: 18),
+                                        Text(Strings.signupError,
+                                            style: GoogleFonts.poppins()
+                                                .copyWith(fontSize: 14, color: Colors.red, fontWeight: FontWeight.normal)),
+                                      ],
+                                    ),
+                                  const SizedBox(height: 18),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset(
-                                          'assets/images/user_authentication/facebook_logo.png'),
+                                      Image.asset(Strings.facebookLogo),
                                       const SizedBox(width: 24),
-                                      Image.asset(
-                                          'assets/images/user_authentication/google_logo.png'),
+                                      Image.asset(Strings.googleLogo),
                                       const SizedBox(width: 24),
-                                      Image.asset(
-                                          'assets/images/user_authentication/linkedin_logo.png'),
+                                      Image.asset(Strings.linkedinLogo),
                                     ],
                                   ),
                                   const SizedBox(height: 120)
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -220,19 +232,15 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                               const SizedBox(width: 2),
                               GestureDetector(
-                                onTap: () => {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()))
+                                onTap: () {
+                                  setState(() {
+                                    widget.onClickLoginSignup();
+                                  });
                                 },
                                 child: Text(
                                   Strings.login,
-                                  style: GoogleFonts.poppins().copyWith(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                      color: const Color(0XFF2805FF)),
+                                  style:
+                                      GoogleFonts.poppins().copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: ColorSys.authBlue),
                                 ),
                               ),
                             ],
@@ -250,12 +258,22 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _handleLoginUser() {
-    // login user
-    if (_loginFormKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
-      );
+  void _handleSignupUser() async {
+    if (formKey.currentState!.validate() == false) return;
+    //show loading circle
+    showDialog(context: context, builder: (context) => const Center(child: CircularProgressIndicator()));
+    // sign Up
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      Components.showSnackBar(e.message);
+      setState(() {
+        _signupError = true;
+      });
     }
+
+    //pop the loading circle
+    navigatorKey.currentState!.popUntil((route) => route.isFirst);
   }
 }

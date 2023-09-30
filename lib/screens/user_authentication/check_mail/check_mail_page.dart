@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pinput/pinput.dart';
 
-import '../../../utils/constants/strings.dart';
+import '../../../utils/values/colors.dart';
+import '../../../utils/values/strings.dart';
 
-class CheckMailScreen extends StatefulWidget {
-  const CheckMailScreen({super.key});
+class CheckMailPage extends StatefulWidget {
+  static const String id = '/checkMailPage';
+  const CheckMailPage({super.key});
 
   @override
-  State<CheckMailScreen> createState() => _CheckMailScreenState();
+  State<CheckMailPage> createState() => _CheckMailPageState();
 }
 
-class _CheckMailScreenState extends State<CheckMailScreen> {
+class _CheckMailPageState extends State<CheckMailPage> {
   final pinController = TextEditingController();
   final focusNode = FocusNode();
   final formKey = GlobalKey<FormState>();
@@ -49,14 +51,10 @@ class _CheckMailScreenState extends State<CheckMailScreen> {
           children: [
             Expanded(
               child: Container(
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                ),
+                decoration: const BoxDecoration(color: Colors.white),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, top: 61, right: 16),
+                    padding: const EdgeInsets.only(left: 16, top: 61, right: 16),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -74,9 +72,7 @@ class _CheckMailScreenState extends State<CheckMailScreen> {
                             ),
                             const SizedBox(height: 28),
                             Text(Strings.typeSentCode("email@gmail.com"),
-                                style: GoogleFonts.poppins().copyWith(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal)),
+                                style: GoogleFonts.poppins().copyWith(fontSize: 14, fontWeight: FontWeight.normal)),
                             const SizedBox(
                               height: 18,
                             ),
@@ -92,24 +88,17 @@ class _CheckMailScreenState extends State<CheckMailScreen> {
                                       length: 6,
                                       controller: pinController,
                                       focusNode: focusNode,
-                                      androidSmsAutofillMethod:
-                                          AndroidSmsAutofillMethod
-                                              .smsUserConsentApi,
+                                      androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsUserConsentApi,
                                       listenForMultipleSmsOnAndroid: true,
                                       defaultPinTheme: defaultPinTheme,
-                                      separatorBuilder: (index) =>
-                                          const SizedBox(width: 12),
-                                      validator: (value) =>
-                                          _handleCheckMail(value),
-                                      hapticFeedbackType:
-                                          HapticFeedbackType.lightImpact,
+                                      separatorBuilder: (index) => const SizedBox(width: 12),
+                                      validator: (value) => _handleCheckMail(value),
+                                      hapticFeedbackType: HapticFeedbackType.lightImpact,
                                       cursor: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           Container(
-                                            margin: const EdgeInsets.only(
-                                                bottom: 9),
+                                            margin: const EdgeInsets.only(bottom: 9),
                                             width: 22,
                                             height: 1,
                                             color: focusedBorderColor,
@@ -117,29 +106,20 @@ class _CheckMailScreenState extends State<CheckMailScreen> {
                                         ],
                                       ),
                                       focusedPinTheme: defaultPinTheme.copyWith(
-                                        decoration: defaultPinTheme.decoration!
-                                            .copyWith(
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: focusedBorderColor),
+                                        decoration: defaultPinTheme.decoration!.copyWith(
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(color: focusedBorderColor),
                                         ),
                                       ),
-                                      submittedPinTheme:
-                                          defaultPinTheme.copyWith(
-                                        decoration: defaultPinTheme.decoration!
-                                            .copyWith(
+                                      submittedPinTheme: defaultPinTheme.copyWith(
+                                        decoration: defaultPinTheme.decoration!.copyWith(
                                           color: fillColor,
-                                          borderRadius:
-                                              BorderRadius.circular(6),
-                                          border: Border.all(
-                                              color: focusedBorderColor),
+                                          borderRadius: BorderRadius.circular(6),
+                                          border: Border.all(color: focusedBorderColor),
                                         ),
                                       ),
-                                      errorPinTheme:
-                                          defaultPinTheme.copyBorderWith(
-                                        border:
-                                            Border.all(color: Colors.redAccent),
+                                      errorPinTheme: defaultPinTheme.copyBorderWith(
+                                        border: Border.all(color: Colors.redAccent),
                                       ),
                                     ),
                                   ),
@@ -167,19 +147,11 @@ class _CheckMailScreenState extends State<CheckMailScreen> {
                                   ),
                                   const SizedBox(width: 5),
                                   GestureDetector(
-                                    onTap: () => {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  resendCode()))
-                                    },
+                                    onTap: () => {Navigator.push(context, MaterialPageRoute(builder: (context) => resendCode()))},
                                     child: Text(
                                       'Resend Code',
-                                      style: GoogleFonts.poppins().copyWith(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w400,
-                                          color: const Color(0XFF2805FF)),
+                                      style: GoogleFonts.poppins()
+                                          .copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: ColorSys.authBlue),
                                     ),
                                   ),
                                 ],
@@ -210,5 +182,3 @@ class _CheckMailScreenState extends State<CheckMailScreen> {
 
   resendCode() {}
 }
-
-class PinCodeTextField {}

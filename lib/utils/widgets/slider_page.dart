@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../utils/constants/colorsSys.dart';
-
 class SliderPage extends StatelessWidget {
   final String image, title, content;
 

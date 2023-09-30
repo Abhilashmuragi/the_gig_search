@@ -12,11 +12,8 @@ class SliderIndicator extends StatelessWidget {
       height: 6,
       width: 30,
       margin: const EdgeInsets.only(right: 5),
-      decoration: BoxDecoration(
-          color: isActive
-              ? Colors.black
-              : const Color.fromRGBO(236, 236, 236, 100),
-          borderRadius: BorderRadius.circular(5)),
+      decoration:
+          BoxDecoration(color: isActive ? Colors.black : const Color.fromRGBO(236, 236, 236, 100), borderRadius: BorderRadius.circular(5)),
     );
   }
 }

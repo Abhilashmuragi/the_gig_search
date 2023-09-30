@@ -8,12 +8,14 @@ class CustomInputField extends StatefulWidget {
   final bool suffixIcon;
   final bool obscureText;
   final bool prefixIcon;
+  final TextEditingController? controller;
 
   const CustomInputField(
       {Key? key,
       this.labelText = "",
       this.hintText = "",
       this.validator,
+      this.controller,
       this.suffixIcon = false,
       this.obscureText = false,
       this.prefixIcon = true})
@@ -26,11 +28,10 @@ class CustomInputField extends StatefulWidget {
 class _CustomInputFieldState extends State<CustomInputField> {
   //
   bool _obscureText = true;
-  FocusNode myFocusNode = FocusNode();
+  final FocusNode _myFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Container(
       padding: const EdgeInsets.only(top: 3, bottom: 3),
       child: Column(
@@ -40,45 +41,39 @@ class _CustomInputFieldState extends State<CustomInputField> {
             alignment: Alignment.centerLeft,
             child: Text(
               widget.labelText,
-              style: GoogleFonts.poppins().copyWith(
-                  fontSize: 14, fontWeight: FontWeight.bold, height: 1),
+              style: GoogleFonts.poppins().copyWith(fontSize: 14, fontWeight: FontWeight.bold, height: 1),
             ),
           ),
           const SizedBox(height: 6),
           TextFormField(
-            focusNode: myFocusNode,
+            controller: widget.controller,
+            focusNode: _myFocusNode,
             obscureText: (widget.obscureText && _obscureText),
             decoration: InputDecoration(
-              prefixIcon: widget.prefixIcon?(widget.labelText == "Email")
-                  ? Icon(
-                      Icons.email_outlined,
-                      color: myFocusNode.hasFocus ? Colors.black : Colors.black,
-                    )
-                  : Icon(
-                      Icons.lock_outline_rounded,
-                      color: myFocusNode.hasFocus ? Colors.black : Colors.black,
-                    ):null,
-              labelStyle: TextStyle(
-                  color: myFocusNode.hasFocus ? Colors.black : Colors.black),
-              disabledBorder:
-                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-              enabledBorder:
-                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
-              focusedBorder:
-                  const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+              prefixIcon: widget.prefixIcon
+                  ? (widget.labelText == "Email")
+                      ? Icon(
+                          Icons.email_outlined,
+                          color: _myFocusNode.hasFocus ? Colors.black : Colors.black,
+                        )
+                      : Icon(
+                          Icons.lock_outline_rounded,
+                          color: _myFocusNode.hasFocus ? Colors.black : Colors.black,
+                        )
+                  : null,
+              labelStyle: TextStyle(color: _myFocusNode.hasFocus ? Colors.black : Colors.black),
+              disabledBorder: const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+              enabledBorder: const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
+              focusedBorder: const OutlineInputBorder(borderSide: BorderSide(width: 1.0)),
               focusColor: Colors.black,
-              focusedErrorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0)),
-              errorBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red, width: 1.0)),
+              focusedErrorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1.0)),
+              errorBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.red, width: 1.0)),
               isDense: true,
               hintText: widget.hintText,
               suffixIcon: widget.suffixIcon
                   ? IconButton(
                       icon: Icon(
-                        _obscureText
-                            ? Icons.remove_red_eye
-                            : Icons.visibility_off_outlined,
+                        _obscureText ? Icons.remove_red_eye : Icons.visibility_off_outlined,
                         color: Colors.black54,
                       ),
                       onPressed: () {
