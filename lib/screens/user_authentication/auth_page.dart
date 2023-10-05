@@ -3,6 +3,9 @@ import 'package:the_gig_workers_app/screens/user_authentication/login/login_page
 import 'package:the_gig_workers_app/screens/user_authentication/signup/signup_page.dart';
 
 class AuthPage extends StatefulWidget {
+  static String id = '/authPage';
+  static bool isLogin = true;
+
   const AuthPage({Key? key}) : super(key: key);
 
   @override
@@ -10,10 +13,11 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  bool isLogin = true;
+  static String id = '/authPage';
+  bool isLogin = AuthPage.isLogin;
 
   @override
-  Widget build(BuildContext context) => isLogin ? LoginPage(onClickLoginSignup: toggle) : SignUpPage(onClickLoginSignup: toggle);
+  Widget build(BuildContext context) => isLogin ? LoginPage(onClickLoginSignup: toggle) : SignUpPage(onClickSwitchLoginSignup: toggle);
 
   void toggle() {
     setState(() {

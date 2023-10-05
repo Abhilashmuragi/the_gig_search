@@ -16,12 +16,12 @@ class IntroSliderPage extends StatefulWidget {
 }
 
 class _IntroSliderPageState extends State<IntroSliderPage> {
-  PageController _pageController = PageController();
+  PageController pageController = PageController();
   int currentIndex = 0;
 
   @override
   void initState() {
-    _pageController = PageController(initialPage: 0);
+    pageController = PageController(initialPage: 0);
     super.initState();
     _handleSplashScreen();
   }
@@ -42,7 +42,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                     currentIndex = page;
                   });
                 },
-                controller: _pageController,
+                controller: pageController,
                 children: _sliderImages()),
           ),
           _buildIndicator(currentIndex),
@@ -58,9 +58,9 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0), side: const BorderSide(color: Colors.black)),
                     )),
                 onPressed: () {
-                  if (_pageController.hasClients) {
-                    _pageController.animateToPage(
-                      _pageController.page!.floor() + 1,
+                  if (pageController.hasClients) {
+                    pageController.animateToPage(
+                      pageController.page!.floor() + 1,
                       duration: const Duration(milliseconds: Numerics.sliderTransitionTimeMilliSeconds),
                       curve: Curves.easeInOut,
                     );
@@ -79,7 +79,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    pageController.dispose();
     super.dispose();
   }
 }
@@ -111,7 +111,6 @@ List<Widget> _sliderImages() {
 }
 
 void _handleSplashScreen() async {
-  //Remove the splash screen after specified seconds
   await Future.delayed(const Duration(seconds: 2));
   FlutterNativeSplash.remove();
 }

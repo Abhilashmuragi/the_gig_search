@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:the_gig_workers_app/screens/user_authentication/terms_and_conditions/terms_and_conditions_page.dart';
+import 'package:the_gig_workers_app/utils/values/textStyles.dart';
 import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
 import '../../../main.dart';
@@ -14,9 +16,9 @@ import '../../../utils/widgets/custom_input_field.dart';
 
 class SignUpPage extends StatefulWidget {
   static String id = '/SignupPage';
-  final VoidCallback onClickLoginSignup;
+  final VoidCallback onClickSwitchLoginSignup;
 
-  const SignUpPage({Key? key, required this.onClickLoginSignup}) : super(key: key);
+  const SignUpPage({Key? key, required this.onClickSwitchLoginSignup}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -57,14 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    Strings.signup,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.poppins().copyWith(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
+                                  Text(Strings.signup, textAlign: TextAlign.center, style: TextStyles.poppins28Normal()),
                                   const SizedBox(height: 28),
                                   CustomInputField(
                                       controller: _firstNameController,
@@ -115,7 +110,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       if (textValue == null || textValue.isEmpty) {
                                         return Strings.passwordRequired;
                                       } else if (textValue.length < 6) {
-                                        return "Password should contain minimum 6 characters.";
+                                        return Strings.minCharacters;
                                       } else {
                                         return null;
                                       }
@@ -125,55 +120,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                   Text.rich(
                                     TextSpan(
                                       children: [
-                                        const TextSpan(
-                                          text: Strings.bySigningUp,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                            height: 0,
-                                          ),
-                                        ),
-                                        const TextSpan(
-                                          text: Strings.tAmpersandC,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                            height: 0,
-                                          ),
-                                        ),
-                                        const TextSpan(
-                                          text: Strings.and,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                            height: 0,
-                                          ),
-                                        ),
-                                        const TextSpan(
-                                          text: Strings.privacyPolicy,
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.w500,
-                                            height: 0,
-                                          ),
-                                        ),
+                                        TextSpan(text: Strings.bySigningUp, style: TextStyles.poppins14w500(color: Colors.grey)),
+                                        TextSpan(text: Strings.tAmpersandC, style: TextStyles.poppins14w500()),
+                                        TextSpan(text: Strings.and, style: TextStyles.poppins14w500(color: Colors.grey)),
+                                        TextSpan(text: Strings.privacyPolicy, style: TextStyles.poppins14w500()),
                                         TextSpan(
                                             text: Strings.learnMore,
-                                            style: const TextStyle(
-                                              color: ColorSys.authBlue,
-                                              fontSize: 14,
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.w500,
-                                              height: 0,
-                                            ),
+                                            style: TextStyles.poppins14w500(color: ColorSys.authBlue),
                                             recognizer: TapGestureRecognizer()
                                               ..onTap = () {
                                                 navigatorKey.currentState!.pushNamed(TermsAndConditionsPage.id);
@@ -190,9 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     Column(
                                       children: [
                                         const SizedBox(height: 18),
-                                        Text(Strings.signupError,
-                                            style: GoogleFonts.poppins()
-                                                .copyWith(fontSize: 14, color: Colors.red, fontWeight: FontWeight.normal)),
+                                        Text(Strings.signupError, style: TextStyles.poppins14Normal(color: Colors.red))
                                       ],
                                     ),
                                   const SizedBox(height: 18),
@@ -201,7 +152,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                     children: [
                                       Image.asset(Strings.facebookLogo),
                                       const SizedBox(width: 24),
-                                      Image.asset(Strings.googleLogo),
+                                      GestureDetector(
+                                        onTap: () {
+                                          signInWithGoogle();
+                                        },
+                                        child: Image.asset(Strings.googleLogo),
+                                      ),
                                       const SizedBox(width: 24),
                                       Image.asset(Strings.linkedinLogo),
                                     ],
@@ -223,25 +179,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                Strings.alreadySignedUp,
-                                style: GoogleFonts.poppins().copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              Text(Strings.alreadySignedUp, style: TextStyles.poppins12Normal()),
                               const SizedBox(width: 2),
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    widget.onClickLoginSignup();
+                                    widget.onClickSwitchLoginSignup();
                                   });
                                 },
-                                child: Text(
-                                  Strings.login,
-                                  style:
-                                      GoogleFonts.poppins().copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: ColorSys.authBlue),
-                                ),
+                                child: Text(Strings.login, style: TextStyles.poppins12Normal(color: ColorSys.authBlue)),
                               ),
                             ],
                           ),
@@ -267,7 +213,7 @@ class _SignUpPageState extends State<SignUpPage> {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      Components.showSnackBar(e.message);
+      Components.showSnackBar(Strings.signupError);
       setState(() {
         _signupError = true;
       });
@@ -275,5 +221,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
     //pop the loading circle
     navigatorKey.currentState!.popUntil((route) => route.isFirst);
+  }
+
+  signInWithGoogle() async {
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
+    final credential = GoogleAuthProvider.credential(idToken: gAuth.idToken, accessToken: gAuth.accessToken);
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

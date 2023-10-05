@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../values/strings.dart';
+
 class CustomInputField extends StatefulWidget {
   final String labelText;
   final String hintText;
@@ -51,7 +53,7 @@ class _CustomInputFieldState extends State<CustomInputField> {
             obscureText: (widget.obscureText && _obscureText),
             decoration: InputDecoration(
               prefixIcon: widget.prefixIcon
-                  ? (widget.labelText == "Email")
+                  ? (widget.labelText == Strings.email)
                       ? Icon(
                           Icons.email_outlined,
                           color: _myFocusNode.hasFocus ? Colors.black : Colors.black,

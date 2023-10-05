@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:the_gig_workers_app/screens/home_page/home_page.dart';
+import 'package:the_gig_workers_app/utils/values/textStyles.dart';
 import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
 import '../../../utils/values/colors.dart';
@@ -63,52 +63,33 @@ class _VerifyMailState extends State<VerifyMail> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        Strings.checkMail,
-                                        textAlign: TextAlign.center,
-                                        style: GoogleFonts.poppins().copyWith(
-                                          fontSize: 28,
-                                          fontWeight: FontWeight.normal,
-                                        ),
-                                      ),
+                                      Text(Strings.checkMail, textAlign: TextAlign.center, style: TextStyles.poppins28Normal()),
                                       const SizedBox(height: 28),
                                       Text(Strings.checkVerificationMail(FirebaseAuth.instance.currentUser!.email!),
-                                          style: GoogleFonts.poppins().copyWith(fontSize: 14, fontWeight: FontWeight.normal)),
+                                          style: TextStyles.poppins14Normal()),
                                       const SizedBox(height: 52),
                                       Align(
                                         alignment: Alignment.center,
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
-                                            Text(
-                                              Strings.codeNotReceived,
-                                              style: GoogleFonts.poppins().copyWith(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
+                                            Text(Strings.codeNotReceived, style: TextStyles.poppins14Normal()),
                                             const SizedBox(width: 5),
                                             GestureDetector(
                                               onTap: () => _canResendMail ? _sendVerificationMail() : null,
                                               child: Text(
-                                                'Resend Verification mail',
-                                                style: GoogleFonts.poppins().copyWith(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: _canResendMail ? ColorSys.authBlue : Colors.grey),
+                                                Strings.resendVerifyMail,
+                                                style: TextStyles.poppins14Normal(color: _canResendMail ? ColorSys.authBlue : Colors.grey),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
                                       const SizedBox(height: 18),
-                                      Text("You can re send verification mail every 60 seconds.",
-                                          style: GoogleFonts.poppins().copyWith(fontSize: 12, fontWeight: FontWeight.normal)),
+                                      Text(Strings.resendAfterXSeconds, style: TextStyles.poppins12Normal()),
                                       const SizedBox(height: 18),
                                       if (_verifyMailError)
-                                        Text(Strings.verifyMailError,
-                                            style: GoogleFonts.poppins()
-                                                .copyWith(fontSize: 14, color: Colors.red, fontWeight: FontWeight.normal)),
+                                        Text(Strings.verifyMailError, style: TextStyles.poppins14Normal(color: Colors.red)),
                                     ],
                                   ),
                                 ],

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">The GiG Search</string>
+    <string name="facebook_app_id">828579958721588</string>
+    <string name="fb_login_protocol_scheme">fb828579958721588</string>
+    <string name="facebook_client_token">b986c59e6428e8da842413c066999449</string>
+</resources>

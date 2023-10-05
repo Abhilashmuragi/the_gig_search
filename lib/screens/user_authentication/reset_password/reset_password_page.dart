@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:the_gig_workers_app/main.dart';
+import 'package:the_gig_workers_app/screens/user_authentication/auth_page.dart';
 import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
 import '../../../utils/values/colors.dart';
 import '../../../utils/values/strings.dart';
+import '../../../utils/values/textStyles.dart';
 import '../../../utils/widgets/custom_form_button.dart';
 import '../../../utils/widgets/custom_input_field.dart';
 
@@ -50,20 +52,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    Strings.resetPass,
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.poppins().copyWith(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                                  ),
+                                  Text(Strings.resetPass, textAlign: TextAlign.center, style: TextStyles.poppins28Normal()),
                                   const SizedBox(height: 28),
-                                  Text(Strings.willMailInstruction,
-                                      style: GoogleFonts.poppins().copyWith(fontSize: 14, fontWeight: FontWeight.normal)),
-                                  const SizedBox(
-                                    height: 18,
-                                  ),
+                                  Text(Strings.willMailInstruction, style: TextStyles.poppins14Normal()),
+                                  const SizedBox(height: 18),
                                   CustomInputField(
                                       controller: _emailController,
                                       labelText: Strings.email,
@@ -98,19 +90,18 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                Strings.dontHaveAccount,
-                                style: GoogleFonts.poppins().copyWith(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
+                              Text(Strings.dontHaveAccount, style: TextStyles.poppins12Normal()),
                               GestureDetector(
-                                onTap: () => navigatorKey.currentState!.popUntil((route) => route.isFirst),
+                                onTap: () {
+                                  AuthPage.isLogin = false;
+                                  navigatorKey.currentState!.popUntil((route) {
+                                    return route.isFirst;
+                                  });
+                                  navigatorKey.currentState!.pushNamed(AuthPage.id);
+                                },
                                 child: Text(
                                   Strings.signup,
-                                  style:
-                                      GoogleFonts.poppins().copyWith(fontSize: 12, fontWeight: FontWeight.w400, color: ColorSys.authBlue),
+                                  style: TextStyles.poppins12Normal(color: ColorSys.authBlue),
                                 ),
                               ),
                             ],
@@ -131,9 +122,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Future _handleResetPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: _emailController.text.trim());
-      Components.showSnackBar("Password reset email was sent");
+      Components.showSnackBar(Strings.resetMailSent);
     } on FirebaseAuthException catch (e) {
-      Components.showSnackBar(e.message);
+      Components.showSnackBar(Strings.resetMailSendError);
     }
   }
 }

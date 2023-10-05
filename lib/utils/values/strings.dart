@@ -38,12 +38,13 @@ class Strings {
 
   //Verify Mail
   static const checkMail = "Check your Mail";
-
   static typeSentCode(String email) => "We,ve sent a 6-digit confirmation code to $email. Make sure you enter correct code.";
   static checkVerificationMail(String email) => "We,ve sent a verification mail to $email. Please use that to conform your identity.";
   static const validate = "Validate";
   static const codeNotReceived = "Didn’t receive code?";
   static const verifyMailError = "There was a problem trying to send verification mail. Please try again later";
+  static const resendVerifyMail = "Resend Verification mail";
+  static const resendAfterXSeconds = "You can re send verification mail every 60 seconds.";
 
   //Login
   static const rememberMe = "Remember Me";
@@ -56,6 +57,8 @@ class Strings {
   static const willMailInstruction = "We’ll email you instruction to reset your password";
   static const resetPass = "Reset Password";
   static const sendLink = "Send Link";
+  static const resetMailSent = "Password reset email was sent";
+  static const resetMailSendError = "There was a error trying to send mail. Please try again";
 
   //SignUp
   static const firstName = "First Name";
@@ -72,6 +75,7 @@ class Strings {
   static const privacyPolicy = "Privacy Policy.";
   static const learnMore = "* Learn more";
   static const signupError = "There was a problem trying to signing you up. Please try again later";
+  static const minCharacters = "Password should contain minimum 6 characters.";
 
   //Terms and Conditions
   static const tAndC = "Terms and conditions";

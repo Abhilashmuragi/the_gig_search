@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../utils/values/strings.dart';
+import '../../../utils/values/textStyles.dart';
 import '../../../utils/widgets/custom_form_button.dart';
 
 class TermsAndConditionsPage extends StatefulWidget {
@@ -43,13 +44,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(bottom: 23),
-                    child: Text(
-                      Strings.tAndC,
-                      style: GoogleFonts.poppins().copyWith(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+                    child: Text(Strings.tAndC, style: TextStyles.poppins28Normal()),
                   ),
                   Expanded(
                     child: SingleChildScrollView(
