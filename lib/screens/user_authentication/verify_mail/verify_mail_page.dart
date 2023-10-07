@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_gig_workers_app/screens/home_page/home_page.dart';
+import 'package:the_gig_workers_app/screens/intro_slider/intro_slider.dart';
 import 'package:the_gig_workers_app/utils/values/textStyles.dart';
 import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
@@ -31,8 +33,8 @@ class _VerifyMailState extends State<VerifyMail> {
 
     if (_isEmailVerified == false) {
       _sendVerificationMail();
-
       _timer = Timer.periodic(const Duration(seconds: 3), (timer) => _checkEmailVerified());
+      _setUserSharedPref();
     }
   }
 
@@ -40,7 +42,24 @@ class _VerifyMailState extends State<VerifyMail> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return _isEmailVerified == true
-        ? const HomePage()
+        ? FutureBuilder(
+            future: isNewUser(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const CircularProgressIndicator();
+              } else if (snapshot.connectionState == ConnectionState.done) {
+                if (snapshot.hasError) {
+                  return Components.showSnackBar("Some Error has occurred please try again");
+                } else if (snapshot.hasData) {
+                  return snapshot.data ? const IntroSliderPage() : const HomePage();
+                } else {
+                  return Components.showSnackBar("Some Error has occurred please try again");
+                }
+              } else {
+                return Components.showSnackBar("Some Error has occurred please try again");
+              }
+            },
+          )
         : SafeArea(
             child: Scaffold(
               backgroundColor: Colors.black,
@@ -158,5 +177,15 @@ class _VerifyMailState extends State<VerifyMail> {
     if (_isEmailVerified) {
       _timer?.cancel();
     }
+  }
+
+  Future<void> _setUserSharedPref() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(FirebaseAuth.instance.currentUser!.email!, true);
+  }
+
+  Future<bool> isNewUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(FirebaseAuth.instance.currentUser!.email!) ?? false;
   }
 }

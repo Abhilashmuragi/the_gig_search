@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:the_gig_workers_app/main.dart';
+import 'package:the_gig_workers_app/screens/home_page/home_page.dart';
 
 import '../../utils/values/numerics.dart';
 import '../../utils/values/strings.dart';
 import '../../utils/widgets/slider_indicator.dart';
 import '../../utils/widgets/slider_page.dart';
 
-class IntroSliderPage extends StatefulWidget {
-  static String id = '/introSliderPage';
+class IntroSliderEmployerPage extends StatefulWidget {
+  static String id = '/introSliderEmployerPage';
 
-  const IntroSliderPage({Key? key}) : super(key: key);
+  const IntroSliderEmployerPage({Key? key}) : super(key: key);
 
   @override
-  State<IntroSliderPage> createState() => _IntroSliderPageState();
+  State<IntroSliderEmployerPage> createState() => _IntroSliderEmployerPageState();
 }
 
-class _IntroSliderPageState extends State<IntroSliderPage> {
+class _IntroSliderEmployerPageState extends State<IntroSliderEmployerPage> {
   PageController pageController = PageController();
   int currentIndex = 0;
 
@@ -23,7 +24,6 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   void initState() {
     pageController = PageController(initialPage: 0);
     super.initState();
-    _handleSplashScreen();
   }
 
   @override
@@ -65,9 +65,10 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                       curve: Curves.easeInOut,
                     );
                   }
+                  if (currentIndex == 3) navigatorKey.currentState!.pushNamed(HomePage.id);
                 },
                 child: Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10), child: Text(currentIndex == 5 ? Strings.letsGo : Strings.next)),
+                    padding: const EdgeInsets.only(left: 10, right: 10), child: Text(currentIndex == 3 ? Strings.letsGo : Strings.next)),
               ),
             ),
           ),
@@ -86,7 +87,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
 
 Widget _buildIndicator(int currentIndex) {
   List<Widget> indicators = [];
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 4; i++) {
     if (currentIndex == i) {
       indicators.add(const SliderIndicator(isActive: true));
     } else {
@@ -101,16 +102,9 @@ Widget _buildIndicator(int currentIndex) {
 
 List<Widget> _sliderImages() {
   return const [
-    SliderPage(image: Strings.introSliderImage_1, title: Strings.introStepTitle_1, content: Strings.introStepContent_1),
-    SliderPage(image: Strings.introSliderImage_2, title: Strings.introStepTitle_2, content: Strings.introStepContent_2),
-    SliderPage(image: Strings.introSliderImage_3, title: Strings.introStepTitle_3, content: Strings.introStepContent_3),
-    SliderPage(image: Strings.introSliderImage_4, title: Strings.introStepTitle_4, content: Strings.introStepContent_4),
-    SliderPage(image: Strings.introSliderImage_5, title: Strings.introStepTitle_5, content: Strings.introStepContent_5),
-    SliderPage(image: Strings.introSliderImage_6, title: Strings.introStepTitle_6, content: Strings.introStepContent_6),
+    SliderPage(image: Strings.introEmployerImage_1, title: Strings.introEmployerTitle_1, content: Strings.introEmployerContent_1),
+    SliderPage(image: Strings.introEmployerImage_2, title: Strings.introEmployerTitle_2, content: Strings.introEmployerContent_2),
+    SliderPage(image: Strings.introEmployerImage_3, title: Strings.introEmployerTitle_3, content: Strings.introEmployerContent_3),
+    SliderPage(image: Strings.introEmployerImage_4, title: Strings.introEmployerTitle_4, content: Strings.introEmployerContent_4),
   ];
-}
-
-void _handleSplashScreen() async {
-  await Future.delayed(const Duration(seconds: 2));
-  FlutterNativeSplash.remove();
 }

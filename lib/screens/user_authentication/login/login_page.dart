@@ -248,7 +248,6 @@ class _LoginPageState extends State<LoginPage> {
         AppleIDAuthorizationScopes.fullName,
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
-        // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
         clientId: 'de.lunaone.flutter.signinwithappleexample.service',
 
         redirectUri: Uri.parse(
