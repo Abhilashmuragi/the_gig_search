@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:the_gig_workers_app/main.dart';
+import 'package:the_gig_workers_app/screens/intro_slider/intro_slider_employer.dart';
+import 'package:the_gig_workers_app/screens/intro_slider/intro_slider_worker.dart';
 
 import '../../utils/values/colors.dart';
 import '../../utils/values/strings.dart';
 import '../../utils/values/textStyles.dart';
+import '../../utils/widgets/custom_form_button.dart';
 
 class IntroSliderPage extends StatefulWidget {
   static String id = '/introSliderPage';
@@ -19,11 +22,6 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
   var selectedIndex = 2;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SafeArea(
@@ -34,7 +32,7 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
             padding: const EdgeInsets.only(top: 46),
             child: Column(
               children: [
-                Image.asset("assets/images/app_logo/gig_logo.png"),
+                SizedBox(height: 100, width: 100, child: Image.asset("assets/images/app_logo/gig_logo.png")),
                 Padding(
                   padding: const EdgeInsets.only(top: 46, left: 16, right: 32),
                   child: Column(children: [
@@ -43,84 +41,102 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        "To begin this journey, tell us what type of account you’d be opening"
-                        ".",
+                        Strings.chooseAccountType,
                         style: TextStyles.poppins18Normal(color: Colors.grey),
                       ),
                     ),
                     const SizedBox(height: 24),
-                    Container(
-                      height: 108,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                        shadows: const [BoxShadow(color: Color(0x0F000000), blurRadius: 14, offset: Offset(0, 2), spreadRadius: 1)],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 0, left: 41, bottom: 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                                height: 52,
-                                width: 52,
-                                child: SvgPicture.asset(selectedIndex == 0
-                                    ? "assets/images/intro_slider/worker_polygon_selected.svg"
-                                    : "assets/images/intro_slider/worker_polygon_unselected.svg")),
-                            const SizedBox(width: 28),
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Individual", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter')),
-                                SizedBox(height: 13),
-                                Text(
-                                  "Looking for Jobs",
-                                  style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter'),
-                                ),
-                              ],
-                            )
-                          ],
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = 0;
+                        });
+                      },
+                      child: Container(
+                        height: 108,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: selectedIndex == 0 ? const Color(0xFFF5F9FF) : Colors.white,
+                            border: Border.all(color: selectedIndex == 0 ? Colors.blue : Colors.white, width: 3.0),
+                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                            boxShadow: const [BoxShadow(color: Color(0x0F000000), blurRadius: 14, offset: Offset(0, 2), spreadRadius: 1)]),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 0, left: 41, bottom: 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  height: 52,
+                                  width: 52,
+                                  child: SvgPicture.asset(
+                                      selectedIndex == 0 ? Strings.workerPolygonSelected : Strings.workerPolygonUnselected)),
+                              const SizedBox(width: 28),
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(Strings.individual,
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter')),
+                                  SizedBox(height: 13),
+                                  Text(
+                                    Strings.lookingJob,
+                                    style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter'),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
                     const SizedBox(height: 24),
-                    Container(
-                      height: 108,
-                      decoration: ShapeDecoration(
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                        shadows: const [BoxShadow(color: Color(0x0F000000), blurRadius: 14, offset: Offset(0, 2), spreadRadius: 1)],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 0, left: 41, bottom: 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                                height: 52,
-                                width: 52,
-                                child: SvgPicture.asset(
-                                  selectedIndex == 1
-                                      ? "assets/images/intro_slider/company_polygon_selected.svg"
-                                      : "assets/images/intro_slider/company_polygon_unselected.svg",
-                                )),
-                            const SizedBox(width: 28),
-                            const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Company", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter')),
-                                SizedBox(height: 13),
-                                Text(
-                                  "Looking for Staff",
-                                  style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter'),
-                                ),
-                              ],
-                            )
-                          ],
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = 1;
+                        });
+                      },
+                      child: Container(
+                        height: 108,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: selectedIndex == 1 ? const Color(0xFFF5F9FF) : Colors.white,
+                            border: Border.all(color: selectedIndex == 1 ? Colors.blue : Colors.white, width: 3.0),
+                            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                            boxShadow: const [BoxShadow(color: Color(0x0F000000), blurRadius: 14, offset: Offset(0, 2), spreadRadius: 1)]),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 0, left: 41, bottom: 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  height: 52,
+                                  width: 52,
+                                  child: SvgPicture.asset(
+                                    selectedIndex == 1 ? Strings.companyPolygonSelected : Strings.companyPolygonUnselected,
+                                  )),
+                              const SizedBox(width: 28),
+                              const Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(Strings.company, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter')),
+                                  SizedBox(height: 13),
+                                  Text(
+                                    Strings.lookingStaff,
+                                    style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.w500, fontFamily: 'Inter'),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                       ),
+                    ),
+                    const SizedBox(height: 24),
+                    CustomFormButton(
+                      innerText: Strings.next,
+                      onPressed: () => _handleNext(selectedIndex),
                     ),
                   ]),
                 )
@@ -154,5 +170,13 @@ class _IntroSliderPageState extends State<IntroSliderPage> {
         ],
       )),
     );
+  }
+
+  _handleNext(int selectedIndex) {
+    if (selectedIndex == 0) {
+      navigatorKey.currentState!.pushNamed(IntroSliderWorkerPage.id);
+    } else if (selectedIndex == 1) {
+      navigatorKey.currentState!.pushNamed(IntroSliderEmployerPage.id);
+    }
   }
 }

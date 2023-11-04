@@ -7,16 +7,16 @@ import '../../utils/values/strings.dart';
 import '../../utils/widgets/slider_indicator.dart';
 import '../../utils/widgets/slider_page.dart';
 
-class IntroWorkerWorkerPage extends StatefulWidget {
-  static String id = '/introWorkerWorkerPage';
+class IntroSliderWorkerPage extends StatefulWidget {
+  static String id = '/introSliderWorkerPage';
 
-  const IntroWorkerWorkerPage({Key? key}) : super(key: key);
+  const IntroSliderWorkerPage({Key? key}) : super(key: key);
 
   @override
-  State<IntroWorkerWorkerPage> createState() => _IntroWorkerWorkerPageState();
+  State<IntroSliderWorkerPage> createState() => _IntroSliderWorkerPageState();
 }
 
-class _IntroWorkerWorkerPageState extends State<IntroWorkerWorkerPage> {
+class _IntroSliderWorkerPageState extends State<IntroSliderWorkerPage> {
   PageController pageController = PageController();
   int currentIndex = 0;
 
