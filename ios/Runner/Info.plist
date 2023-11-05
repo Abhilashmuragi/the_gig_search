@@ -30,6 +30,8 @@
 			<string>fbapi</string>
 			<string>fb-messenger-share-api</string>
 		</array>
+		<key>NSLocationWhenInUseUsageDescription</key>
+        <string>Your location is required for searching nearby jobs.</string>
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
