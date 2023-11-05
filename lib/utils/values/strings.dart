@@ -14,6 +14,7 @@ class Strings {
   static const linkedinLogo = "assets/images/user_authentication/linkedin_logo.png";
 
   //Intro Slider
+  static const chooseAccountType = "To begin this journey, tell us what type of account you’d be opening.";
   static const introWorkerTitle_1 = "Welcome to \"The GIG!\"";
   static const introWorkerContent_1 = "Your hub for flexible work and instant job matching.";
   static const introWorkerTitle_2 = "Swipe to Find Your Gig";
@@ -44,9 +45,17 @@ class Strings {
   static const introEmployerImage_2 = "assets/images/intro_slider/employer/intro_slider_2.png";
   static const introEmployerImage_3 = "assets/images/intro_slider/employer/intro_slider_3.png";
   static const introEmployerImage_4 = "assets/images/intro_slider/employer/intro_slider_4.png";
+  static const workerPolygonSelected = "assets/images/intro_slider/worker_polygon_selected.svg";
+  static const workerPolygonUnselected = "assets/images/intro_slider/worker_polygon_unselected.svg";
+  static const companyPolygonUnselected = "assets/images/intro_slider/company_polygon_unselected.svg";
+  static const companyPolygonSelected = "assets/images/intro_slider/company_polygon_selected.svg";
+  static const company = "Company";
+  static const lookingStaff = "Looking for Staff";
 
   static const letsGo = "Let's go!";
   static const next = "Next";
+  static const individual = "Individual";
+  static const lookingJob = "Looking for Jobs";
 
   //Verify Mail
   static const checkMail = "Check your Mail";

@@ -2,14 +2,14 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:the_gig_workers_app/screens/user_authentication/terms_and_conditions/terms_and_conditions_page.dart';
 import 'package:the_gig_workers_app/utils/values/textStyles.dart';
-import 'package:the_gig_workers_app/utils/widgets/components.dart';
 
 import '../../../main.dart';
 import '../../../utils/values/colors.dart';
+import '../../../utils/values/statics.dart';
 import '../../../utils/values/strings.dart';
 import '../../../utils/widgets/custom_form_button.dart';
 import '../../../utils/widgets/custom_input_field.dart';
@@ -77,7 +77,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                       controller: _lastNameController,
                                       labelText: Strings.lastName,
                                       hintText: Strings.yourLastName,
-                                      obscureText: true,
                                       prefixIcon: false,
                                       validator: (textValue) {
                                         if (textValue == null || textValue.isEmpty) {
@@ -150,16 +149,20 @@ class _SignUpPageState extends State<SignUpPage> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Image.asset(Strings.facebookLogo),
-                                      const SizedBox(width: 24),
                                       GestureDetector(
-                                        onTap: () {
-                                          signInWithGoogle();
-                                        },
-                                        child: Image.asset(Strings.googleLogo),
+                                        onTap: signInWithGoogle,
+                                        child: SizedBox(width: 70, height: 70, child: Image.asset(Strings.googleLogo)),
                                       ),
                                       const SizedBox(width: 24),
-                                      Image.asset(Strings.linkedinLogo),
+                                      if (Statics.isAppleSignInAvailable)
+                                        SizedBox(
+                                          height: 80,
+                                          width: 80,
+                                          child: GestureDetector(
+                                            onTap: signInWithApple,
+                                            child: Image.asset("assets/images/user_authentication/apple_logo.png"),
+                                          ),
+                                        ),
                                     ],
                                   ),
                                   const SizedBox(height: 120)
@@ -206,14 +209,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   void _handleSignupUser() async {
     if (formKey.currentState!.validate() == false) return;
+
     //show loading circle
     showDialog(context: context, builder: (context) => const Center(child: CircularProgressIndicator()));
     // sign Up
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
+      await _setUserSharedPref(_emailController.text);
     } on FirebaseAuthException catch (e) {
-      Components.showSnackBar(Strings.signupError);
       setState(() {
         _signupError = true;
       });
@@ -227,6 +231,20 @@ class _SignUpPageState extends State<SignUpPage> {
     final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication gAuth = await gUser!.authentication;
     final credential = GoogleAuthProvider.credential(idToken: gAuth.idToken, accessToken: gAuth.accessToken);
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    var authResult = await FirebaseAuth.instance.signInWithCredential(credential);
+    if (authResult.additionalUserInfo!.isNewUser) {
+      await _setUserSharedPref(gUser.email);
+    }
   }
+
+  Future<void> _setUserSharedPref(String email) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool(email, true);
+  }
+
+  void signInWithLinkedIn() {}
+
+  void signInWithApple() {}
+
+  void addUserToFireStore() {}
 }

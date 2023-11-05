@@ -1,13 +1,14 @@
 // Needed because we can't import `dart:html` into a mobile app,
 // while on the flip-side access to `dart:io` throws at runtime (hence the `kIsWeb` check below)
 import 'dart:io';
-import 'package:http/http.dart' as http;
 
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:the_gig_workers_app/main.dart';
 import 'package:the_gig_workers_app/screens/user_authentication/reset_password/reset_password_page.dart';
 import 'package:the_gig_workers_app/utils/values/statics.dart';
@@ -16,10 +17,8 @@ import '../../../utils/values/colors.dart';
 import '../../../utils/values/numerics.dart';
 import '../../../utils/values/strings.dart';
 import '../../../utils/values/textStyles.dart';
-import '../../../utils/widgets/components.dart';
 import '../../../utils/widgets/custom_form_button.dart';
 import '../../../utils/widgets/custom_input_field.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = '/LoginPage';
@@ -38,6 +37,11 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
   bool rememberMe = false;
   bool loginError = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -152,17 +156,20 @@ class _LoginPageState extends State<LoginPage> {
                                     children: [
                                       GestureDetector(
                                         onTap: signInWithGoogle,
-                                        child: Image.asset(Strings.facebookLogo),
+                                        child: SizedBox(width: 70, height: 70, child: Image.asset(Strings.googleLogo)),
                                       ),
                                       const SizedBox(width: 24),
-                                      GestureDetector(
-                                        onTap: signInWithGoogle,
-                                        child: Image.asset(Strings.googleLogo),
-                                      ),
-                                      const SizedBox(width: 24),
-                                      Image.asset(Strings.linkedinLogo),
+                                      // TextButton(onPressed: ()=> navigatorKey.currentState!.pushNamed(LinkedIn.id), child: const Text
+                                      //   ("LinkedIn")),
                                       if (Statics.isAppleSignInAvailable)
-                                        SizedBox(height: 50, width: 100, child: SignInWithAppleButton(onPressed: signInWithApple))
+                                        SizedBox(
+                                          height: 80,
+                                          width: 80,
+                                          child: GestureDetector(
+                                            onTap: signInWithApple,
+                                            child: Image.asset("assets/images/user_authentication/apple_logo.png"),
+                                          ),
+                                        ),
                                     ],
                                   ),
                                   const SizedBox(height: Numerics.scaffoldBottomMargin),
@@ -224,7 +231,6 @@ class _LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: _emailController.text.trim(), password: _passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      Components.showSnackBar(Strings.loginError);
       setState(() {
         loginError = true;
       });
@@ -249,14 +255,10 @@ class _LoginPageState extends State<LoginPage> {
       ],
       webAuthenticationOptions: WebAuthenticationOptions(
         clientId: 'de.lunaone.flutter.signinwithappleexample.service',
-
         redirectUri: Uri.parse(
           'https://flutter-sign-in-with-apple-example.glitch.me/callbacks/sign_in_with_apple',
         ),
       ),
-      // TODO: Remove these if you have no need for them
-      nonce: 'example-nonce',
-      state: 'example-state',
     );
 
     // ignore: avoid_print
@@ -335,5 +337,9 @@ class _LoginPageState extends State<LoginPage> {
     // default:
     // throw UnimplementedError();
     // }
+  }
+
+  void signInWithLinkedIn() {
+    // ProjectionParameters.
   }
 }
